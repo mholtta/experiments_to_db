@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Experiments (
 	ICDCodeSet TEXT NOT NULL, -- Full or top 50
 	Version TEXT NOT NULL,
 	MaxLength INTEGER NOT NULL,
-	BertMaxLenght INTEGER NOT NULL,
+	BertMaxLenght INTEGER,
 	JobID INTEGER NOT NULL UNIQUE,
 	Model TEXT NOT NULL,
 	FilterSize INTEGER NOT NULL,
@@ -17,22 +17,23 @@ CREATE TABLE IF NOT EXISTS Experiments (
 	Optimizer INTEGER NOT NULL,
 	WeightDecay REAL NOT NULL,
 	Criterion TEXT NOT NULL,
-	UseLrScheduler INTEGER NOT NULL, -- Boolean
-	WarmUp REAL NOT NULL,
-	UseLrLayerDecay INTEGER NOT NULL, -- Boolean
-	LrLayerDecay REAL NOT NULL,
+	UseLrScheduler INTEGER, -- Boolean
+	WarmUp REAL,
+	UseLrLayerDecay INTEGER, -- Boolean
+	LrLayerDecay REAL,
 	TuneWordEmbedding INTEGER NOT NULL, -- Boolean
 	RandomSeed INTEGER NOT NULL,
 	UseExternalEmbedding INTEGER NOT NULL,
-	NumWorkers INTEGER NOT NULL,
+	NumWorkers INTEGER,
 	ElmoTune INTEGER NOT NULL, -- Boolean
 	ElmoDropOut REAL NOT NULL,
 	ElmoGamma REAL NOT NULL,
 	UseElmo INTEGER NOT NULL, -- Boolean
 	PreTrainedModel TEXT NOT NULL,
-	Runtime TEXT,
-	EpochsRun INTEGER,
-	BestModelAtEpoch INTEGER
+	Date TEXT NOT NULL,
+	Time TEXT NOT NULL,
+	EpochsRun INTEGER NOT NULL,
+	BestModelAtEpoch INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS TrainingStatistics (
