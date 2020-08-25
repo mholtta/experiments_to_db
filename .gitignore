@@ -36,6 +36,9 @@ MANIFEST
 #SQlite database
 *.db
 
+# Config file
+config.py
+
 # TXT-files
 *.txt
 
