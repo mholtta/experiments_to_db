@@ -30,6 +30,12 @@ MANIFEST
 # Pickle files
 *.p
 
+# VSCode
+.vscode/
+
+#SQlite database
+*.db
+
 # TXT-files
 *.txt
 
