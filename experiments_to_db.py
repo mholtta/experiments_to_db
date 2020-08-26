@@ -47,7 +47,7 @@ def out_file_processing(folder, out_file, epochs_run, best_model_at_epoch):
     date, time = date_time_parser(folder, model)
 
     # TODO create the experiment record followinf db schema
-    experiment = 
+    
 
 
 
