@@ -3,6 +3,7 @@ import glob
 from config import folder_experiments
 import warnings
 from collections import defaultdict
+import json
 
 # Folders containing experiments 
 folders = glob.glob(folder_experiments)
@@ -19,8 +20,9 @@ for folder in folders:
         warnings.warn("Folder {} has several out-files, file not processed.".format(folder))
     else:
         out_file = out_file[0]
+        metrics_file = "".join([folder, "metrics.json"])
 
-        with open(out_file, "r") as f:
+        with open(out_file, "r") as f, open(metrics_file) as m:
             name_space = f.readline()
             # Dropping "Namespace(" from beginnning and ")\n" from end
             name_space = name_space[10:][:-2]
@@ -32,13 +34,22 @@ for folder in folders:
             # COnverting to defaultdict for easy default value
             experiment_description = defaultdict(lambda: None, experiment_description)
 
+            # Reading in metrics
+            metrics_raw = m.read()
+            metrics = json.loads(metrics_raw)
+
+            # TODO need to get the best model by looking at which creteria used and then look at metrics, which has the largest value
+            # TODO need to parse date and time from folder name
+            # TODO need to parse metrics to list of lists or pandas df or something else
+            # TODO need to create the list from which data loaded
+
             cur.execute("""INSERT OR IGNORE INTO Experiments(FolderName, Data, ICDCodeSet,
              Version, MaxLength, BertMaxLength, JobID, Model, FilterSize, NumFilterMaps, NumEpochs,
              Dropout, Patience, BatchSize, LearningRate, Optimizer, WeightDecay, Criterion, UseLrScheduler,
              WarmUp, UseLrLayerDecay, LrLayerDecay, TuneWordEmbedding, RandomSeed, UseExternalEmbedding, 
              NumWorkers, ElmoTune, ElmoDropOut, ElmoGamma, UseElmo, PreTrainedModel, Date, Time, EpochsRun, 
              BestModelAtEpoch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", # TODO add list here)
+             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", )# TODO add list here
             print(experiment_description)
 
 
