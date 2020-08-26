@@ -5,6 +5,7 @@ import warnings
 from collections import defaultdict
 import json
 import numpy as np
+import datetime
 
 
 def list_wrap_remove(var):
@@ -23,6 +24,57 @@ def list_wrap_remove(var):
         return var[0]
     else:
         return var
+
+def out_file_processing(folder, out_file, epochs_run, best_model_at_epoch):
+    """
+    Helper function for reading the experiment hyperparameters from first line of .out file.
+
+    """
+    namespace = out_file.readline()
+    # Dropping "Namespace(" from beginnning and ")\n" from end
+    namespace = namespace[10:][:-2]
+    # To list
+    namespace = namespace.split(',')
+    print(namespace)
+    # From list to dictionary with hyperparameter names as keys
+    experiment_description = {item.split('=')[0] : item.split('=')[1] for item in namespace}
+    # Converting to defaultdict for easy default value
+    experiment_description = defaultdict(lambda: None, experiment_description)
+
+    # Model from experiment_description
+    model = experiment_description["model"]
+    # Getting date and time
+    date, time = date_time_parser(folder, model)
+
+    # TODO create the experiment record followinf db schema
+    experiment = 
+
+
+
+def date_time_parser(folder_path, model):
+    """
+    Helper function for parsing date and time from folder path name.
+
+    """
+    folder = folder_path.split("\\")[-1]
+
+    # Removing model and "_" from folder name
+    len_model = len(model) + 1
+    folder = folder[len_model:]
+
+    # Splitting to pieces and taking first 5 items from list
+    date_time_raw = folder.split["_"][0:4]
+
+    # Dictionary for converting month into a number
+    mth_conversion = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,"Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
+
+    mth_int = mth_conversion[date_time_raw[0]]
+    current_year = datetime.datetime.now().year
+    # Date in string format
+    date = ".".join([date_time_raw[1], str(mth_int), str(current_year)])
+    time = ":".join(date_time_raw[2:4])
+
+    return date, time
 
 def metrics_file_processing(folder, metrics_file, model_criteria):
     """
