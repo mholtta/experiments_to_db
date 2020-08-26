@@ -6,8 +6,12 @@ from collections import defaultdict
 import json
 
 
-# Helper function for removing list wrapping for a single item that might be wrapped into a list
 def list_wrap_remove(var):
+    """
+    Helper function for removing list wrapping for a single item that might be wrapped into a list
+
+    """
+
     if type(var) != list:    
         # If not a list, return the input
         return var
@@ -20,6 +24,11 @@ def list_wrap_remove(var):
         return var
 
 def metrics_file_processing(folder, metrics_file):
+    """
+    Helper function for processing metrics file
+
+    """
+
     # Reading in metrics
     metrics_raw = metrics_file.read()
     metrics = json.loads(metrics_raw)
@@ -35,10 +44,17 @@ def metrics_file_processing(folder, metrics_file):
     return test_statistics
 
 def get_test_statistics(folder, metrics_dict):
+    """
+    Helper function for obtaining test statistics from metrics dictionary.
 
+    """
 
     return [folder, metrics_dict["acc_macro_te"], metrics_dict["prec_macro_te"], metrics_dict["rec_macro_te"], 
-    metrics_dict["f1_macro_te"]]
+    metrics_dict["f1_macro_te"], metrics_dict["auc_macro_te"], metrics_dict["acc_micro_te"], metrics_dict["prec_micro_te"],
+    metrics_dict["rec_micro_te"], metrics_dict["f1_micro_te"], metrics_dict["auc_micro_te"], metrics_dict["rec_at_5_te"],
+    metrics_dict["prec_at_5_te"], metrics_dict["f1_at_5_te"], metrics_dict["rec_at_8_te"],
+    metrics_dict["prec_at_8_te"], metrics_dict["f1_at_8_te"], metrics_dict["rec_at_15_te"],
+    metrics_dict["prec_at_15_te"], metrics_dict["f1_at_15_te"]]
 
 
 
