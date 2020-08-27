@@ -142,12 +142,12 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
         metrics_dict = defaultdict(lambda: None, result_dict)
 
     # All measures printen once per epoch, picking one
-    num_epochs = len(metrics_dict["loss_tr"])
+    num_epochs = len_float_or_list(metrics_dict["loss_tr"])
 
     # Finding which epoch yielded the best model
     # Model criteria in format 'prec_at_8', 'prec_at_15', 'f1_macro', 'f1_micro', 'prec_at_5' or 'loss_dev', matches dictionary keys
     criteria_list = metrics_dict[model_criteria]
-    best_model_at_epoch = criteria_list.index(max(criteria_list))
+    best_model_at_epoch = criteria_list.index(max(criteria_list)) if type(criteria_list) == list else 1
 
 
     # Gathering all measures to one list
@@ -160,6 +160,10 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
     
     # Not all metrics exist for one experiment, some None returned from dict. Converting None to [None] * num_epochs
     training_stats = list(map(lambda x: [None] * num_epochs if x == None else x, training_stats ))
+
+    # When only one epoch has been exceptionally run, metrics are floats, not lists.
+    # Wrapping floats to lists
+    training_stats = list(map(lambda x: [x] if type(x) == float else x, training_stats)) 
 
     # All lists should be of equal length, testing for it
     lenght_of_lists = list(map(lambda x: len(x), training_stats))
