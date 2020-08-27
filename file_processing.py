@@ -175,14 +175,25 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
 
 
     # Gathering all measures to one list
-    training_stats = [[folder * num_epochs], [range(1, num_epochs)],metrics_dict["acc_macro"], metrics_dict["prec_macro"], metrics_dict["rec_macro"], 
+    training_stats = [[folder] * num_epochs, list(range(1, num_epochs + 1)),metrics_dict["acc_macro"], metrics_dict["prec_macro"], metrics_dict["rec_macro"], 
                     metrics_dict["f1_macro"], metrics_dict["auc_macro"], metrics_dict["acc_micro"], metrics_dict["prec_micro"],
                     metrics_dict["rec_micro"], metrics_dict["f1_micro"], metrics_dict["auc_micro"], metrics_dict["rec_at_5"],
                     metrics_dict["prec_at_5"], metrics_dict["f1_at_5"], metrics_dict["rec_at_8"],
                     metrics_dict["prec_at_8"], metrics_dict["f1_at_8"], metrics_dict["rec_at_15"],
                     metrics_dict["prec_at_15"], metrics_dict["f1_at_15"], metrics_dict["loss_dev"], metrics_dict["loss_tr"]]
     
-    # Tranposing to have one line of measures per epoch
-    training_stats = np.array(training_stats).T.tolist()
+    # Not all metrics exist for one experiment, some None returned from dict. Converting None to [None] * num_epochs
+    training_stats = list(map(lambda x: [None] * num_epochs if x == None else x, training_stats ))
+
+    # All lists should be of equal length, testing for it
+    lenght_of_lists = list(map(lambda x: len(x), training_stats))
+    assert len(set(lenght_of_lists)) == 1
+
+
+    # Transposing to have one line of measures per epoch
+    training_stats = np.asarray(training_stats)
+    training_stats = training_stats.T
+    training_stats = training_stats.tolist()
 
     return num_epochs, best_model_at_epoch, training_stats
+

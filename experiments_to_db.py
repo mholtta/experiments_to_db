@@ -47,7 +47,7 @@ def main():
                 WarmUp, UseLrLayerDecay, LrLayerDecay, TuneWordEmbedding, RandomSeed, UseExternalEmbedding, 
                 NumWorkers, ElmoTune, ElmoDropOut, ElmoGamma, UseElmo, PreTrainedModel, Date, Time, EpochsRun, 
                 BestModelAtEpoch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", experiment)
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", experiment)
                 
                 cur.execute("""INSERT OR IGNORE INTO TestStatistics(FolderName, MacroAccuracy, 
                             MacroPrecision, MacroRecall, MacroF1, MacroAUC, MicroAccuracy, MicroPrecision,
@@ -56,7 +56,7 @@ def main():
                             VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", test_statistics)
                 
                 for row in training_statistics:
-                    cur.execute("""INSERT OR IGNORE INTO TestStatistics(FolderName, Epoch, MacroAccuracy, 
+                    cur.execute("""INSERT OR IGNORE INTO TrainingStatistics(FolderName, Epoch, MacroAccuracy, 
                                 MacroPrecision, MacroRecall, MacroF1, MacroAUC, MicroAccuracy, MicroPrecision,
                                 MicroRecall, MicroF1, MicroAUC, RecallAt5, PrecisionAt5, F1At5, RecallAt8,
                                 PrecisionAt8, F1At8, RecallAt15, PrecisionAt15, F1At15, LossValidation, LossTraining)
@@ -65,11 +65,6 @@ def main():
                 # Ending the implicit transaction only after all inserts done for one experiment to improve performance
                 connection.commit()
                 
-
-
-
-        
-
     connection.close()
 
 if __name__ == "__main__":
