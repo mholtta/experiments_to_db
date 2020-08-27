@@ -25,7 +25,7 @@ def list_wrap_remove(var):
     else:
         return var
 
-def out_file_processing(folder, out_file, epochs_run, best_model_at_epoch):
+def out_file_processing(folder, out_file):
     """
     Helper function for reading the experiment hyperparameters from first line of .out file.
 
@@ -49,7 +49,7 @@ def out_file_processing(folder, out_file, epochs_run, best_model_at_epoch):
     # TODO create the experiment record followinf db schema
 
     # TODO delete epochs run and best model at epoch from this point, need to add those later
-    
+    experiment = [folder, experiment_description["data_path"], experiment_description["Y"], experiment_description["version"], experiment_description["MAX_LENGTH"], experiment_description["BERT_MAX_LENGTH"], experiment_description["job_id"], experiment_description["model"], experiment_description["filter_size"], experiment_description["num_filter_maps"], experiment_description["n_epochs"], experiment_description["dropout"], experiment_description["patience"], experiment_description["batch_size"], experiment_description["lr"], experiment_description["optimizer"], experiment_description["weight_decay"], experiment_description["criterion"], experiment_description["use_lr_scheduler"], experiment_description["warm_up"], experiment_description["use_lr_layer_decay"], experiment_description["lr_layer_decay"], experiment_description["tune_wordemb"], experiment_description["random_seed"], experiment_description["use_ext_emb"], experiment_description["num_workers"], experiment_description["elmo_tune"], experiment_description["elmo_dropout"], experiment_description["elmo_gamma"], experiment_description["use_elmo"], experiment_description["pretrained_model"], date, time]
 
 
 
@@ -68,12 +68,12 @@ def date_time_parser(folder_path, model):
     date_time_raw = folder.split["_"][0:4]
 
     # Dictionary for converting month into a number
-    mth_conversion = {"Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,"Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
+    mth_conversion = {"Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12"}
 
-    mth_int = mth_conversion[date_time_raw[0]]
+    mth_num = mth_conversion[date_time_raw[0]]
     current_year = datetime.datetime.now().year
     # Date in string format
-    date = ".".join([date_time_raw[1], str(mth_int), str(current_year)])
+    date = "-".join([str(current_year), mth_num, date_time_raw[1]])
     time = ":".join(date_time_raw[2:4])
 
     return date, time
