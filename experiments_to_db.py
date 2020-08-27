@@ -21,16 +21,16 @@ for folder in folders:
         out_file = out_file[0]
         metrics_file = "".join([folder, "metrics.json"])
 
-        with open(out_file, "r") as f, open(metrics_file) as m:
+        with open(out_file, "r") as out_f, open(metrics_file) as m:
             
-            # TODO use first metrics file preprocessing to get data from there. Then use out_file_processing to process out file
-            # Then do cur executes
+            # First process *.out-file, obtain experiment description. Model_criterion needed to obtain best_model_at_epoch from metrics file.
+            experiment, model_criteria = out_file_processing(folder, out_f)
 
+            # Then get training and test statistics from metrics.json. And also additional experiment info
+            num_epochs, best_model_at_epoch, training_statistics, test_statistics = metrics_file_processing(folder, m, model_criteria)
 
-            # TODO need to get the best model by looking at which creteria used and then look at metrics, which has the largest value
-            # TODO need to parse date and time from folder name
-            # TODO need to parse metrics to list of lists or pandas df or something else
-            # TODO need to create the list from which data loaded
+            # Appending num_epochs and best_model_at_epoch gotten from metrics.json to experiment desciption
+            experiment.append(num_epochs, best_model_at_epoch)
 
             cur.execute("""INSERT OR IGNORE INTO Experiments(FolderName, Data, ICDCodeSet,
              Version, MaxLength, BertMaxLength, JobID, Model, FilterSize, NumFilterMaps, NumEpochs,
@@ -38,10 +38,27 @@ for folder in folders:
              WarmUp, UseLrLayerDecay, LrLayerDecay, TuneWordEmbedding, RandomSeed, UseExternalEmbedding, 
              NumWorkers, ElmoTune, ElmoDropOut, ElmoGamma, UseElmo, PreTrainedModel, Date, Time, EpochsRun, 
              BestModelAtEpoch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", )# TODO add list here
-            print(experiment_description)
+             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", experiment)
+            
+            cur.execute("""INSERT OR IGNORE INTO TestStatistics(FolderName, MacroAccuracy, 
+                        MacroPrecision, MacroRecall, MacroF1, MacroAUC, MicroAccuracy, MicroPrecision,
+                        MicroRecall, MicroF1, MicroAUC, RecallAt5, PrecisionAt5, F1At5, RecallAt8,
+                        PrecisionAt8, F1At8, RecallAt15, PrecisionAt15, F1At15)
+                        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", test_statistics)
+            
+            for row in training_statistics:
+                cur.execute("""INSERT OR IGNORE INTO TestStatistics(FolderName, Epoch, MacroAccuracy, 
+                            MacroPrecision, MacroRecall, MacroF1, MacroAUC, MicroAccuracy, MicroPrecision,
+                            MicroRecall, MicroF1, MicroAUC, RecallAt5, PrecisionAt5, F1At5, RecallAt8,
+                            PrecisionAt8, F1At8, RecallAt15, PrecisionAt15, F1At15, LossValidation, LossTraining)
+                            VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", row)
+            
+            # Ending the implicit transaction only after all inserts done for one experiment to improve performance
+            connection.commit()
+            
 
 
-    print(out_file)
 
-# connection.close()
+    
+
+connection.close()
