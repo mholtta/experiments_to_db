@@ -13,17 +13,26 @@ def list_wrap_remove(var):
     Helper function for removing list wrapping for a single item that might be wrapped into a list
 
     """
-
-    if type(var) != list:    
-        # If not a list, return the input
-        return var
-    elif len(var) > 1:
+    if type(var) == list and len(var) > 1:
         # If an actual list, return the list
         return var
-    elif len(var) == 1:
+    elif type(var) == list and len(var) == 1:
+        # If a list of one item, unpack
         return var[0]
     else:
         return var
+
+def quote_remover(var):
+    """ 
+    Helper function from removing extra quotes from a variable in case it's a string.
+    
+    """
+    if type(var) == str:
+        # If string, replace quotes, strip spaces
+        return var.replace("'", "").replace('"','').strip()
+    else:
+        # If not string, return input
+        return 
 
 def out_file_processing(folder, out_file):
     """
@@ -37,9 +46,11 @@ def out_file_processing(folder, out_file):
     namespace = namespace[10:][:-2]
     # To list
     namespace = namespace.split(',')
-    print(namespace)
-    # From list to dictionary with hyperparameter names as keys
-    experiment_description = {item.split('=')[0] : item.split('=')[1] for item in namespace}
+    # From list to dictionary with hyperparameter names as keys. Keys contain spaces needing to be removed.
+    # Values contain extra single or double quotes needing to be removed
+    experiment_description = {item.split('=')[0].strip() : quote_remover( item.split('=')[1] ) for item in namespace}
+
+
     # Converting to defaultdict for easy default value
     experiment_description = defaultdict(lambda: None, experiment_description)
 
@@ -71,14 +82,14 @@ def date_time_parser(folder_path, model):
     Helper function for parsing date and time from folder path name.
 
     """
-    folder = folder_path.split("\\")[-1]
+    folder = folder_path.split("\\")[-2]
 
     # Removing model and "_" from folder name
     len_model = len(model) + 1
     folder = folder[len_model:]
 
     # Splitting to pieces and taking first 5 items from list
-    date_time_raw = folder.split["_"][0:4]
+    date_time_raw = folder.split("_")[0:4]
 
     # Dictionary for converting month into a number
     mth_conversion = {"Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12"}
@@ -173,6 +184,5 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
     
     # Tranposing to have one line of measures per epoch
     training_stats = np.array(training_stats).T.tolist()
-
 
     return num_epochs, best_model_at_epoch, training_stats

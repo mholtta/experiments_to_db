@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Experiments (
 	ICDCodeSet TEXT NOT NULL, -- Full or top 50
 	Version TEXT NOT NULL,
 	MaxLength INTEGER NOT NULL,
-	BertMaxLenght INTEGER,
+	BertMaxLength INTEGER,
 	JobID INTEGER NOT NULL UNIQUE,
 	Model TEXT NOT NULL,
 	FilterSize INTEGER NOT NULL,
