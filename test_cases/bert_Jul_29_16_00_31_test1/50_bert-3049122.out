@@ -1,0 +1,215 @@
+Namespace(BERT_MAX_LENGTH=512, DATA_DIR='/test/', MAX_LENGTH=2500, MODEL_DIR='/test/', Y='50', batch_size=16, command='removed', criterion='f1_macro', data_path='/test', debug=0, dropout=0.2, elmo_dropout=0, elmo_gamma=0.1, elmo_options_file='test', elmo_tune=False, elmo_weight_file='removed', embed_file='removed', filter_size=3, gpu=0, lr=0.0001, lr_layer_decay=0.95, model='bert', n_epochs=8, num_filter_maps=25, num_workers=10, optimizer='AdamW', patience=10, pretrained_model='emilyalsentzer/Bio_ClinicalBERT', print_every=50, random_seed=12, test_model=None, tune_wordemb=False, use_elmo=0, use_ext_emb=1, use_lr_layer_decay=True, use_lr_scheduler=True, verbose=1, version='3', vocab='removed', warm_up=0.1, weight_decay=0.1)
+loading lookups...
+train_instances 8066
+dev_instances 1573
+test_instances 1729
+EPOCH 0
+Train epoch:  0 [batch #   0, max_seq_len  512]	Loss: 0.735750
+Train epoch:  0 [batch #  50, max_seq_len  512]	Loss: 0.375698
+Train epoch:  0 [batch # 100, max_seq_len  512]	Loss: 0.332847
+Train epoch:  0 [batch # 150, max_seq_len  512]	Loss: 0.311581
+Train epoch:  0 [batch # 200, max_seq_len  512]	Loss: 0.325596
+Train epoch:  0 [batch # 250, max_seq_len  512]	Loss: 0.294009
+Train epoch:  0 [batch # 300, max_seq_len  512]	Loss: 0.340507
+Train epoch:  0 [batch # 350, max_seq_len  512]	Loss: 0.340674
+Train epoch:  0 [batch # 400, max_seq_len  512]	Loss: 0.275607
+Train epoch:  0 [batch # 450, max_seq_len  512]	Loss: 0.245955
+Train epoch:  0 [batch # 500, max_seq_len  512]	Loss: 0.226231
+epoch finish in 252.66s, loss: 0.3210
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.1226, 0.3638, 0.1394, 0.2016, 0.7547
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.1780, 0.7087, 0.1921, 0.3022, 0.7970
+rec_at_5: 0.3977
+prec_at_5: 0.4248
+
+evaluation finish in 21.54s
+saved metrics, params, model to directory removed
+
+EPOCH 1
+Train epoch:  1 [batch #   0, max_seq_len  512]	Loss: 0.289187
+Train epoch:  1 [batch #  50, max_seq_len  512]	Loss: 0.189256
+Train epoch:  1 [batch # 100, max_seq_len  512]	Loss: 0.309351
+Train epoch:  1 [batch # 150, max_seq_len  512]	Loss: 0.291309
+Train epoch:  1 [batch # 200, max_seq_len  512]	Loss: 0.226221
+Train epoch:  1 [batch # 250, max_seq_len  512]	Loss: 0.269030
+Train epoch:  1 [batch # 300, max_seq_len  512]	Loss: 0.204641
+Train epoch:  1 [batch # 350, max_seq_len  512]	Loss: 0.283384
+Train epoch:  1 [batch # 400, max_seq_len  512]	Loss: 0.232982
+Train epoch:  1 [batch # 450, max_seq_len  512]	Loss: 0.243198
+Train epoch:  1 [batch # 500, max_seq_len  512]	Loss: 0.291531
+epoch finish in 249.73s, loss: 0.2615
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.1789, 0.4763, 0.2100, 0.2915, 0.7897
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.2376, 0.6883, 0.2662, 0.3839, 0.8269
+rec_at_5: 0.4457
+prec_at_5: 0.4694
+
+evaluation finish in 21.50s
+saved metrics, params, model to directory removed
+
+EPOCH 2
+Train epoch:  2 [batch #   0, max_seq_len  512]	Loss: 0.220165
+Train epoch:  2 [batch #  50, max_seq_len  512]	Loss: 0.202610
+Train epoch:  2 [batch # 100, max_seq_len  512]	Loss: 0.280838
+Train epoch:  2 [batch # 150, max_seq_len  512]	Loss: 0.212899
+Train epoch:  2 [batch # 200, max_seq_len  512]	Loss: 0.281037
+Train epoch:  2 [batch # 250, max_seq_len  512]	Loss: 0.192344
+Train epoch:  2 [batch # 300, max_seq_len  512]	Loss: 0.216115
+Train epoch:  2 [batch # 350, max_seq_len  512]	Loss: 0.224599
+Train epoch:  2 [batch # 400, max_seq_len  512]	Loss: 0.236037
+Train epoch:  2 [batch # 450, max_seq_len  512]	Loss: 0.274460
+Train epoch:  2 [batch # 500, max_seq_len  512]	Loss: 0.224016
+epoch finish in 249.93s, loss: 0.2381
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2264, 0.5190, 0.2742, 0.3588, 0.8038
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.2925, 0.6622, 0.3437, 0.4526, 0.8449
+rec_at_5: 0.4716
+prec_at_5: 0.4935
+
+evaluation finish in 21.49s
+saved metrics, params, model to directory removed
+
+EPOCH 3
+Train epoch:  3 [batch #   0, max_seq_len  512]	Loss: 0.204083
+Train epoch:  3 [batch #  50, max_seq_len  512]	Loss: 0.215563
+Train epoch:  3 [batch # 100, max_seq_len  512]	Loss: 0.259849
+Train epoch:  3 [batch # 150, max_seq_len  512]	Loss: 0.226648
+Train epoch:  3 [batch # 200, max_seq_len  512]	Loss: 0.201455
+Train epoch:  3 [batch # 250, max_seq_len  512]	Loss: 0.231483
+Train epoch:  3 [batch # 300, max_seq_len  512]	Loss: 0.198584
+Train epoch:  3 [batch # 350, max_seq_len  512]	Loss: 0.245167
+Train epoch:  3 [batch # 400, max_seq_len  512]	Loss: 0.255985
+Train epoch:  3 [batch # 450, max_seq_len  512]	Loss: 0.229579
+Train epoch:  3 [batch # 500, max_seq_len  512]	Loss: 0.231629
+epoch finish in 249.81s, loss: 0.2175
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2326, 0.5767, 0.2817, 0.3785, 0.8072
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.3014, 0.6481, 0.3604, 0.4632, 0.8456
+rec_at_5: 0.4745
+prec_at_5: 0.4950
+
+evaluation finish in 21.48s
+saved metrics, params, model to directory removed
+
+EPOCH 4
+Train epoch:  4 [batch #   0, max_seq_len  512]	Loss: 0.167347
+Train epoch:  4 [batch #  50, max_seq_len  512]	Loss: 0.197890
+Train epoch:  4 [batch # 100, max_seq_len  512]	Loss: 0.241357
+Train epoch:  4 [batch # 150, max_seq_len  512]	Loss: 0.258686
+Train epoch:  4 [batch # 200, max_seq_len  512]	Loss: 0.181295
+Train epoch:  4 [batch # 250, max_seq_len  512]	Loss: 0.184050
+Train epoch:  4 [batch # 300, max_seq_len  512]	Loss: 0.205894
+Train epoch:  4 [batch # 350, max_seq_len  512]	Loss: 0.187839
+Train epoch:  4 [batch # 400, max_seq_len  512]	Loss: 0.239671
+Train epoch:  4 [batch # 450, max_seq_len  512]	Loss: 0.212005
+Train epoch:  4 [batch # 500, max_seq_len  512]	Loss: 0.167420
+epoch finish in 249.89s, loss: 0.1962
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2479, 0.5487, 0.3045, 0.3917, 0.8083
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.3155, 0.6346, 0.3855, 0.4797, 0.8478
+rec_at_5: 0.4809
+prec_at_5: 0.5004
+
+evaluation finish in 21.46s
+saved metrics, params, model to directory removed
+
+EPOCH 5
+Train epoch:  5 [batch #   0, max_seq_len  512]	Loss: 0.186539
+Train epoch:  5 [batch #  50, max_seq_len  512]	Loss: 0.187621
+Train epoch:  5 [batch # 100, max_seq_len  512]	Loss: 0.197474
+Train epoch:  5 [batch # 150, max_seq_len  512]	Loss: 0.196230
+Train epoch:  5 [batch # 200, max_seq_len  512]	Loss: 0.179469
+Train epoch:  5 [batch # 250, max_seq_len  512]	Loss: 0.179595
+Train epoch:  5 [batch # 300, max_seq_len  512]	Loss: 0.180092
+Train epoch:  5 [batch # 350, max_seq_len  512]	Loss: 0.176122
+Train epoch:  5 [batch # 400, max_seq_len  512]	Loss: 0.194529
+Train epoch:  5 [batch # 450, max_seq_len  512]	Loss: 0.184718
+Train epoch:  5 [batch # 500, max_seq_len  512]	Loss: 0.189600
+epoch finish in 249.86s, loss: 0.1781
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2623, 0.5475, 0.3317, 0.4131, 0.8075
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.3204, 0.6147, 0.4009, 0.4853, 0.8465
+rec_at_5: 0.4797
+prec_at_5: 0.5007
+
+evaluation finish in 21.47s
+saved metrics, params, model to directory removed
+
+EPOCH 6
+Train epoch:  6 [batch #   0, max_seq_len  512]	Loss: 0.150378
+Train epoch:  6 [batch #  50, max_seq_len  512]	Loss: 0.185829
+Train epoch:  6 [batch # 100, max_seq_len  512]	Loss: 0.165040
+Train epoch:  6 [batch # 150, max_seq_len  512]	Loss: 0.153608
+Train epoch:  6 [batch # 200, max_seq_len  512]	Loss: 0.171290
+Train epoch:  6 [batch # 250, max_seq_len  512]	Loss: 0.163305
+Train epoch:  6 [batch # 300, max_seq_len  512]	Loss: 0.178842
+Train epoch:  6 [batch # 350, max_seq_len  512]	Loss: 0.186476
+Train epoch:  6 [batch # 400, max_seq_len  512]	Loss: 0.181411
+Train epoch:  6 [batch # 450, max_seq_len  512]	Loss: 0.177361
+Train epoch:  6 [batch # 500, max_seq_len  512]	Loss: 0.137877
+epoch finish in 249.92s, loss: 0.1646
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2586, 0.5471, 0.3228, 0.4060, 0.8067
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.3165, 0.6194, 0.3929, 0.4808, 0.8452
+rec_at_5: 0.4808
+prec_at_5: 0.5006
+
+evaluation finish in 21.45s
+saved metrics, params, model to directory removed
+
+EPOCH 7
+Train epoch:  7 [batch #   0, max_seq_len  512]	Loss: 0.136674
+Train epoch:  7 [batch #  50, max_seq_len  512]	Loss: 0.159197
+Train epoch:  7 [batch # 100, max_seq_len  512]	Loss: 0.186710
+Train epoch:  7 [batch # 150, max_seq_len  512]	Loss: 0.154154
+Train epoch:  7 [batch # 200, max_seq_len  512]	Loss: 0.158504
+Train epoch:  7 [batch # 250, max_seq_len  512]	Loss: 0.171607
+Train epoch:  7 [batch # 300, max_seq_len  512]	Loss: 0.155029
+Train epoch:  7 [batch # 350, max_seq_len  512]	Loss: 0.147218
+Train epoch:  7 [batch # 400, max_seq_len  512]	Loss: 0.121366
+Train epoch:  7 [batch # 450, max_seq_len  512]	Loss: 0.166038
+Train epoch:  7 [batch # 500, max_seq_len  512]	Loss: 0.126345
+epoch finish in 249.87s, loss: 0.1585
+last epoch: testing on dev and test sets
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2590, 0.5408, 0.3243, 0.4054, 0.8066
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.3173, 0.6171, 0.3951, 0.4818, 0.8450
+rec_at_5: 0.4794
+prec_at_5: 0.4999
+
+evaluation finish in 21.47s
+file for evaluation: removed
+
+[MACRO] accuracy, precision, recall, f-measure, AUC
+0.2606, 0.5708, 0.3244, 0.4137, 0.8045
+[MICRO] accuracy, precision, recall, f-measure, AUC
+0.3185, 0.6247, 0.3939, 0.4832, 0.8435
+rec_at_5: 0.4852
+prec_at_5: 0.5062
+
+saved metrics, params, model to directory removed
+
