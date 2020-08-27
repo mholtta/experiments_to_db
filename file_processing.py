@@ -6,6 +6,7 @@ from collections import defaultdict
 import json
 import numpy as np
 import datetime
+import re
 
 
 
@@ -34,6 +35,9 @@ def out_file_processing(folder, out_file):
     model = experiment_description["model"]
     # Getting date and time
     date, time = date_time_parser(folder, model)
+
+    # Transforming folder full path to folder name
+    folder = get_folder_name(folder)
 
     # Extracting model criteria separately to use it in metrics file processing
     model_criteria = experiment_description["criterion"]
@@ -96,6 +100,9 @@ def metrics_file_processing(folder, metrics_file, model_criteria):
     # Converting to defaultdict for easy default value
     metrics = defaultdict(lambda: None, metrics)
 
+    # Transforming folder full path to folder name
+    folder = get_folder_name(folder)
+
     num_epochs, best_model_at_epoch, training_statistics = get_training_statistics(folder, metrics, model_criteria)
 
     test_statistics = get_test_statistics(folder, metrics)
@@ -148,7 +155,6 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
     # Model criteria in format 'prec_at_8', 'prec_at_15', 'f1_macro', 'f1_micro', 'prec_at_5' or 'loss_dev', matches dictionary keys
     criteria_list = metrics_dict[model_criteria]
     best_model_at_epoch = criteria_list.index(max(criteria_list)) if type(criteria_list) == list else 1
-
 
     # Gathering all measures to one list
     training_stats = [[folder] * num_epochs, list(range(1, num_epochs + 1)),metrics_dict["acc_macro"], metrics_dict["prec_macro"], metrics_dict["rec_macro"], 
@@ -226,3 +232,17 @@ def len_float_or_list(var):
         return 1
     else:
         return len(var)
+
+def get_folder_name(full_path):
+    """
+    Helper function for retrieving folder name from folder full path.
+
+    """
+    # Use regex from https://stackoverflow.com/questions/29901266/regular-expression-to-find-last-folder-in-a-path
+    # to clean folder name
+    pattern = re.compile(".*\\\\([^\\\\]+)\\\\")
+    match = pattern.search(full_path)
+    folder = match.group(1)
+
+    return folder
+

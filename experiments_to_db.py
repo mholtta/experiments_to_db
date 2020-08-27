@@ -4,11 +4,11 @@ from config import folder_experiments
 import warnings
 from file_processing import metrics_file_processing, out_file_processing
 
-def main():
+def main(db_name, folder_for_experiments):
     # Folders containing experiments 
-    folders = glob.glob(folder_experiments)
+    folders = glob.glob(folder_for_experiments)
     # Connecting to db and creating cursor
-    connection = sqlite3.connect("experiments.db")
+    connection = sqlite3.connect(db_name)
     cur = connection.cursor()
 
     # Creating tables, if not exists already
@@ -73,4 +73,4 @@ def main():
     connection.close()
 
 if __name__ == "__main__":
-    main()
+    main("experiments.db", folder_experiments)
