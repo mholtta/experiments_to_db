@@ -1,12 +1,12 @@
 import sqlite3
 import glob
-from config import folder_experiments
+from config import folder_experiments, db_location
 import warnings
 from file_processing import metrics_file_processing, out_file_processing
 
 def main(db_name, folder_for_experiments):
     # Folders containing experiments 
-    folders = glob.glob(folder_for_experiments)
+    folders = glob.glob(folder_for_experiments + "*/")
     # Connecting to db and creating cursor
     connection = sqlite3.connect(db_name)
     cur = connection.cursor()
@@ -73,4 +73,4 @@ def main(db_name, folder_for_experiments):
     connection.close()
 
 if __name__ == "__main__":
-    main("experiments.db", folder_experiments)
+    main(db_location, folder_experiments)
