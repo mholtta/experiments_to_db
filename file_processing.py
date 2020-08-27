@@ -29,6 +29,8 @@ def out_file_processing(folder, out_file):
     """
     Helper function for reading the experiment hyperparameters from first line of .out file.
 
+    Returns experiment, model_criteria.
+
     """
     namespace = out_file.readline()
     # Dropping "Namespace(" from beginnning and ")\n" from end
@@ -46,11 +48,22 @@ def out_file_processing(folder, out_file):
     # Getting date and time
     date, time = date_time_parser(folder, model)
 
-    # TODO create the experiment record followinf db schema
+    # Extracting model criteria separately to use it in metrics file processing
+    model_criteria = experiment_description["criterion"]
 
-    # TODO delete epochs run and best model at epoch from this point, need to add those later
-    experiment = [folder, experiment_description["data_path"], experiment_description["Y"], experiment_description["version"], experiment_description["MAX_LENGTH"], experiment_description["BERT_MAX_LENGTH"], experiment_description["job_id"], experiment_description["model"], experiment_description["filter_size"], experiment_description["num_filter_maps"], experiment_description["n_epochs"], experiment_description["dropout"], experiment_description["patience"], experiment_description["batch_size"], experiment_description["lr"], experiment_description["optimizer"], experiment_description["weight_decay"], experiment_description["criterion"], experiment_description["use_lr_scheduler"], experiment_description["warm_up"], experiment_description["use_lr_layer_decay"], experiment_description["lr_layer_decay"], experiment_description["tune_wordemb"], experiment_description["random_seed"], experiment_description["use_ext_emb"], experiment_description["num_workers"], experiment_description["elmo_tune"], experiment_description["elmo_dropout"], experiment_description["elmo_gamma"], experiment_description["use_elmo"], experiment_description["pretrained_model"], date, time]
+    # List to be returned in the order of the database schema
+    experiment = [folder, experiment_description["data_path"], experiment_description["Y"], experiment_description["version"],
+                 experiment_description["MAX_LENGTH"], experiment_description["BERT_MAX_LENGTH"], experiment_description["job_id"],
+                 experiment_description["model"], experiment_description["filter_size"], experiment_description["num_filter_maps"],
+                 experiment_description["n_epochs"], experiment_description["dropout"], experiment_description["patience"],
+                 experiment_description["batch_size"], experiment_description["lr"], experiment_description["optimizer"],
+                 experiment_description["weight_decay"], experiment_description["criterion"], experiment_description["use_lr_scheduler"],
+                 experiment_description["warm_up"], experiment_description["use_lr_layer_decay"], experiment_description["lr_layer_decay"],
+                 experiment_description["tune_wordemb"], experiment_description["random_seed"], experiment_description["use_ext_emb"],
+                 experiment_description["num_workers"], experiment_description["elmo_tune"], experiment_description["elmo_dropout"],
+                 experiment_description["elmo_gamma"], experiment_description["use_elmo"], experiment_description["pretrained_model"], date, time]
 
+    return experiment, model_criteria
 
 
 def date_time_parser(folder_path, model):
@@ -99,8 +112,6 @@ def metrics_file_processing(folder, metrics_file, model_criteria):
     num_epochs, best_model_at_epoch, training_statistics = get_training_statistics(folder, metrics, model_criteria)
 
     test_statistics = get_test_statistics(folder, metrics)
-
-    
 
     return num_epochs, best_model_at_epoch, training_statistics, test_statistics
 
