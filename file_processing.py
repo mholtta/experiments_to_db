@@ -8,31 +8,7 @@ import numpy as np
 import datetime
 
 
-def list_wrap_remove(var):
-    """
-    Helper function for removing list wrapping for a single item that might be wrapped into a list
 
-    """
-    if type(var) == list and len(var) > 1:
-        # If an actual list, return the list
-        return var
-    elif type(var) == list and len(var) == 1:
-        # If a list of one item, unpack
-        return var[0]
-    else:
-        return var
-
-def quote_remover(var):
-    """ 
-    Helper function from removing extra quotes from a variable in case it's a string.
-    
-    """
-    if type(var) == str:
-        # If string, replace quotes, strip spaces
-        return var.replace("'", "").replace('"','').strip()
-    else:
-        # If not string, return input
-        return 
 
 def out_file_processing(folder, out_file):
     """
@@ -115,7 +91,7 @@ def metrics_file_processing(folder, metrics_file, model_criteria):
     metrics = json.loads(metrics_raw)
 
     # Removing list wrapping from single items
-    metrics = { key: list_wrap_remove(value) for key, value in metrics.items()}
+    metrics = { dict_key_editer(key): list_wrap_remove(value) for key, value in metrics.items()}
 
     # Converting to defaultdict for easy default value
     metrics = defaultdict(lambda: None, metrics)
@@ -148,7 +124,7 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
     """
     # If training has early stopped, then one extra validation result with the best model has been added
     # Checking if this is the case, and if yes, removing last validation result
-    if len(metrics_dict["loss_dev"]) != len(metrics_dict["loss_tr"]):
+    if len_float_or_list(metrics_dict["loss_dev"]) != len_float_or_list(metrics_dict["loss_tr"]):
         training_measures = ["acc_macro", "prec_macro", "rec_macro", "f1_macro", "auc_macro", "acc_micro", "prec_micro",
                             "rec_micro", "f1_micro", "auc_micro", "rec_at_5", "rec_at_5", "f1_at_5", "rec_at_8",
                             "prec_at_8", "f1_at_8", "rec_at_15", "prec_at_15", "f1_at_15", "loss_dev", "loss_tr"]
@@ -187,7 +163,7 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
 
     # All lists should be of equal length, testing for it
     lenght_of_lists = list(map(lambda x: len(x), training_stats))
-    assert len(set(lenght_of_lists)) == 1
+    assert len(set(lenght_of_lists)) == 1, "metrics.json in folder {} may be corrupt, please check file".format(folder)
 
 
     # Transposing to have one line of measures per epoch
@@ -197,3 +173,52 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
 
     return num_epochs, best_model_at_epoch, training_stats
 
+def list_wrap_remove(var):
+    """
+    Helper function for removing list wrapping for a single item that might be wrapped into a list
+
+    """
+    if type(var) == list and len(var) > 1:
+        # If an actual list, return the list
+        return var
+    elif type(var) == list and len(var) == 1:
+        # If a list of one item, unpack
+        return var[0]
+    else:
+        return var
+
+def quote_remover(var):
+    """ 
+    Helper function for removing extra quotes from a variable in case it's a string.
+    
+    """
+    if type(var) == str:
+        # If string, replace quotes, strip spaces
+        return var.replace("'", "").replace('"','').strip()
+    else:
+        # If not string, return input
+        return
+
+def dict_key_editer(var):
+    """
+    Helper function for changing MIMIC-II specific measures to align with MIMIC-III.
+
+    MIMIC-II has no validation set, hence test losses produced during training.
+    """
+    if var == "loss_test":
+        return "loss_dev"
+    else:
+        return var
+
+def len_float_or_list(var):
+    """
+    Helper function for handling cases where only one epoch was run. 
+    
+    These abnormal cases result in a float instead of a list, hence len() would create an exception.
+    """
+    if type(var) == list:
+        return len(var)
+    elif type(var) == float:
+        return 1
+    else:
+        return len(var)

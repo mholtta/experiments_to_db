@@ -35,6 +35,7 @@ MANIFEST
 
 #SQlite database
 *.db
+*.db-journal
 
 # Config file
 config.py
