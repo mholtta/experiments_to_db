@@ -120,7 +120,7 @@ def get_test_statistics(folder, metrics_dict):
             metrics_dict["rec_micro_te"], metrics_dict["f1_micro_te"], metrics_dict["auc_micro_te"], metrics_dict["rec_at_5_te"],
             metrics_dict["prec_at_5_te"], metrics_dict["f1_at_5_te"], metrics_dict["rec_at_8_te"],
             metrics_dict["prec_at_8_te"], metrics_dict["f1_at_8_te"], metrics_dict["rec_at_15_te"],
-            metrics_dict["prec_at_15_te"], metrics_dict["f1_at_15_te"]]
+            metrics_dict["prec_at_15_te"], metrics_dict["f1_at_15_te"], metrics_dict["loss_test_te"]]
 
 def get_training_statistics(folder, metrics_dict, model_criteria):
     """

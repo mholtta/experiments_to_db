@@ -85,5 +85,6 @@ CREATE TABLE IF NOT EXISTS TestStatistics (
 	RecallAt15 REAL,
 	PrecisionAt15 REAL,
 	F1At15 REAL,
+	LossTest REAL NOT NULL,
 	FOREIGN KEY(FolderName) REFERENCES Experiments(FolderName)
 );

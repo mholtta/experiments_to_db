@@ -53,8 +53,8 @@ def main(db_name, folder_for_experiments):
                     cur.execute("""INSERT OR IGNORE INTO TestStatistics(FolderName, MacroAccuracy, 
                                 MacroPrecision, MacroRecall, MacroF1, MacroAUC, MicroAccuracy, MicroPrecision,
                                 MicroRecall, MicroF1, MicroAUC, RecallAt5, PrecisionAt5, F1At5, RecallAt8,
-                                PrecisionAt8, F1At8, RecallAt15, PrecisionAt15, F1At15)
-                                VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", test_statistics)
+                                PrecisionAt8, F1At8, RecallAt15, PrecisionAt15, F1At15, LossTest)
+                                VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", test_statistics)
                     
                     for row in training_statistics:
                         cur.execute("""INSERT OR IGNORE INTO TrainingStatistics(FolderName, Epoch, MacroAccuracy, 
