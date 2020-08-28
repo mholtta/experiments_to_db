@@ -133,7 +133,7 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
     # Checking if this is the case, and if yes, removing last validation result
     if len_float_or_list(metrics_dict["loss_dev"]) != len_float_or_list(metrics_dict["loss_tr"]):
         training_measures = ["acc_macro", "prec_macro", "rec_macro", "f1_macro", "auc_macro", "acc_micro", "prec_micro",
-                            "rec_micro", "f1_micro", "auc_micro", "rec_at_5", "rec_at_5", "f1_at_5", "rec_at_8",
+                            "rec_micro", "f1_micro", "auc_micro", "prec_at_5", "rec_at_5", "rec_at_5", "f1_at_5", "rec_at_8",
                             "prec_at_8", "f1_at_8", "rec_at_15", "prec_at_15", "f1_at_15", "loss_dev", "loss_tr"]
         
         # Looping through the dictionary and removing last validation result
@@ -154,7 +154,7 @@ def get_training_statistics(folder, metrics_dict, model_criteria):
     # Finding which epoch yielded the best model
     # Model criteria in format 'prec_at_8', 'prec_at_15', 'f1_macro', 'f1_micro', 'prec_at_5' or 'loss_dev', matches dictionary keys
     criteria_list = metrics_dict[model_criteria]
-    best_model_at_epoch = criteria_list.index(max(criteria_list)) if type(criteria_list) == list else 1
+    best_model_at_epoch = criteria_list.index(max(criteria_list)) + 1 if type(criteria_list) == list else 1
 
     # Gathering all measures to one list
     training_stats = [[folder] * num_epochs, list(range(1, num_epochs + 1)),metrics_dict["acc_macro"], metrics_dict["prec_macro"], metrics_dict["rec_macro"], 
