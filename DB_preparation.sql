@@ -39,16 +39,16 @@ CREATE TABLE IF NOT EXISTS Experiments (
 CREATE TABLE IF NOT EXISTS TrainingStatistics (
 	FolderName TEXT NOT NULL,
 	Epoch INTEGER NOT NULL,
-	MacroAccuracy REAL NOT NULL,
-	MacroPrecision REAL NOT NULL,
-	MacroRecall REAL NOT NULL,
-	MacroF1 REAL NOT NULL,
-	MacroAUC REAL NOT NULL,
-	MicroAccuracy REAL NOT NULL,
-	MicroPrecision REAL NOT NULL,
-	MicroRecall REAL NOT NULL,
-	MicroF1 REAL NOT NULL,
-	MicroAUC REAL NOT NULL,
+	MacroAccuracy REAL,
+	MacroPrecision REAL,
+	MacroRecall REAL,
+	MacroF1 REAL,
+	MacroAUC REAL,
+	MicroAccuracy REAL,
+	MicroPrecision REAL,
+	MicroRecall REAL,
+	MicroF1 REAL,
+	MicroAUC REAL,
 	RecallAt5 REAL,
 	PrecisionAt5 REAL,
 	F1At5 REAL,
@@ -58,24 +58,24 @@ CREATE TABLE IF NOT EXISTS TrainingStatistics (
 	RecallAt15 REAL,
 	PrecisionAt15 REAL,
 	F1At15 REAL,
-	LossValidation REAL NOT NULL,
-	LossTraining REAL NOT NULL,
+	LossValidation REAL,
+	LossTraining REAL,
 	PRIMARY KEY (FolderName, Epoch),
 	FOREIGN KEY(FolderName) REFERENCES Experiments(FolderName)
 );
 
 CREATE TABLE IF NOT EXISTS TestStatistics (
 	FolderName TEXT NOT NULL PRIMARY KEY,
-	MacroAccuracy REAL NOT NULL,
-	MacroPrecision REAL NOT NULL,
-	MacroRecall REAL NOT NULL,
-	MacroF1 REAL NOT NULL,
-	MacroAUC REAL NOT NULL,
-	MicroAccuracy REAL NOT NULL,
-	MicroPrecision REAL NOT NULL,
-	MicroRecall REAL NOT NULL,
-	MicroF1 REAL NOT NULL,
-	MicroAUC REAL NOT NULL,
+	MacroAccuracy REAL,
+	MacroPrecision REAL,
+	MacroRecall REAL,
+	MacroF1 REAL,
+	MacroAUC REAL,
+	MicroAccuracy REAL,
+	MicroPrecision REAL,
+	MicroRecall REAL,
+	MicroF1 REAL,
+	MicroAUC REAL,
 	RecallAt5 REAL,
 	PrecisionAt5 REAL,
 	F1At5 REAL,
@@ -85,6 +85,23 @@ CREATE TABLE IF NOT EXISTS TestStatistics (
 	RecallAt15 REAL,
 	PrecisionAt15 REAL,
 	F1At15 REAL,
-	LossTest REAL NOT NULL,
+	LossTest REAL,
 	FOREIGN KEY(FolderName) REFERENCES Experiments(FolderName)
 );
+
+
+DROP VIEW IF EXISTS Leaderboard;
+
+-- View with top instances for each model based on test MicroF1-score
+CREATE VIEW IF NOT EXISTS Leaderboard
+AS
+	SELECT Experiments.Version, Experiments.ICDCodeSet, Experiments.Model, Experiments.LearningRate, Experiments.FolderName, Experiments.BestModelAtEpoch, Experiments.EpochsRun, Experiments.NumEpochs, TestStatistics.*
+    FROM Experiments, TestStatistics
+    WHERE Experiments.FolderName = TestStatistics.FolderName AND TestStatistics.FolderName IN
+        (SELECT TestStatistics.FolderName
+            FROM TestStatistics, Experiments
+            WHERE Experiments.FolderName = TestStatistics.FolderName
+            GROUP BY Experiments.Model, Experiments.Version, Experiments.ICDCodeSet
+            HAVING MAX(TestStatistics.MicroF1)
+        )
+    ORDER BY Experiments.Version, Experiments.ICDCodeSet, TestStatistics.MicroF1 DESC;
