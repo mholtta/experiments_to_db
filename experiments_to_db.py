@@ -105,7 +105,7 @@ def prepare_database(connection: sqlite3.Connection, cur: sqlite3.Cursor, sql_fi
         scripts = sql_script.read().split(";")
         for script in scripts:
             cur.execute(script)
-        connection.commit()
+            connection.commit()
 
 
 if __name__ == "__main__":
