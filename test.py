@@ -101,7 +101,7 @@ class TestFileProcessing(unittest.TestCase):
         model_criteria = 'f1_macro'
         folder = '.\\test_cases\\test2\\elmo_Aug_24_10_39_10_test2\\'
         metrics_file = "".join([folder, "metrics.json"])
-        train_should_be = [("elmo_Aug_24_10_39_10_test2", 3, 0.0, 0.0, 0.0, 0.0, 0.46579811244429226, 0.0, None, 0.0, 0.0, None, 0.5750237367933662, 0.2069661320038722, 0.22364907819453272, 0.2149844387467271, None, None, None, None, None, None, 0.5515820256517863, 0.6169608133854252)]
+        train_should_be = [("elmo_Aug_24_10_39_10_test2", 3, 0.0, 0.0, 0.0, 0.0, 0.46579811244429226, 0.0, None, 0.0, None, 0.5750237367933662, 0.2069661320038722, 0.22364907819453272, 0.2149844387467271, None, None, None, None, None, None, 0.5515820256517863, 0.6169608133854252)]
         
         # First removing db, if exists
         if os.path.exists(db_location):
