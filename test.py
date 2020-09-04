@@ -1,6 +1,6 @@
 import unittest
 from file_processing import out_file_processing, metrics_file_processing
-from experiments_to_db import main
+from experiments_to_db import main, prepare_database, training_statistics_to_db
 import os
 import sqlite3
 
@@ -94,7 +94,36 @@ class TestFileProcessing(unittest.TestCase):
         train_statistics = cur.fetchall()
         self.assertEqual(train_statistics, train_should_be, "Should be {}, was {}".format(train_should_be, train_statistics))
         connection.close()
+    
+    def test_failed_training_run(self):
+        # First setting up needed variable
+        db_location = '.\\test_cases\\test_db.db'
+        model_criteria = 'f1_macro'
+        folder = '.\\test_cases\\test2\\elmo_Aug_24_10_39_10_test2\\'
+        metrics_file = "".join([folder, "metrics.json"])
+        train_should_be = [("elmo_Aug_24_10_39_10_test2", 3, 0.0, 0.0, 0.0, 0.0, 0.46579811244429226, 0.0, None, 0.0, 0.0, None, 0.5750237367933662, 0.2069661320038722, 0.22364907819453272, 0.2149844387467271, None, None, None, None, None, None, 0.5515820256517863, 0.6169608133854252)]
         
+        # First removing db, if exists
+        if os.path.exists(db_location):
+            os.remove(db_location)
+        
+        # Connecting to db and creating cursor
+        connection = sqlite3.connect(db_location)
+        cur = connection.cursor()
+
+        # Creating tables, if not exists already
+        prepare_database(connection, cur, 'DB_preparation.sql')
+
+        # Opening metrics-file, getting training statistics and loading to database
+        with open(metrics_file) as m:
+            num_epochs, best_model_at_epoch, training_statistics, test_statistics = metrics_file_processing(folder, m, model_criteria)
+            training_statistics_to_db(cur, training_statistics)
+            connection.commit()
+        
+        # Obtaining one tuple from TrainingStatistics table and comparing to expected value
+        cur.execute("SELECT * FROM TrainingStatistics WHERE FolderName = 'elmo_Aug_24_10_39_10_test2' AND Epoch = 3;" )
+        train_from_db = cur.fetchall()
+        self.assertEqual(train_from_db, train_should_be, "Should be {}, was {}".format(train_should_be, train_from_db))
 
 
 

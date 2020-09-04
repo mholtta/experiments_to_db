@@ -13,12 +13,8 @@ def main(db_name: str, folder_for_experiments: str):
     cur = connection.cursor()
 
     # Creating tables, if not exists already
-    with open("CREATE_TABLE_STATEMENTS.sql", "r") as sql_script:
-        scripts = sql_script.read().split(";")
-        for script in scripts:
-            cur.execute(script)
-        connection.commit()
-
+    prepare_database(connection, cur, "DB_preparation.sql")
+    
     # Going through each experiment and gathering data
     for folder in folders:
         try:
@@ -98,6 +94,19 @@ def training_statistics_to_db(cur: sqlite3.Cursor, training_statistics: List[Lis
                                     MicroRecall, MicroF1, MicroAUC, RecallAt5, PrecisionAt5, F1At5, RecallAt8,
                                     PrecisionAt8, F1At8, RecallAt15, PrecisionAt15, F1At15, LossValidation, LossTraining)
                                     VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", row)
+
+def prepare_database(connection: sqlite3.Connection, cur: sqlite3.Cursor, sql_file: str):
+    """
+    A helper function for preparing the database, i.e. running the SQL-script in the given file.
+
+    """
+    # Creating tables, if not exists already
+    with open(sql_file, "r") as sql_script:
+        scripts = sql_script.read().split(";")
+        for script in scripts:
+            cur.execute(script)
+        connection.commit()
+
 
 if __name__ == "__main__":
     main(db_location, folder_experiments)
