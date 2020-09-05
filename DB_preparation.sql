@@ -12,9 +12,10 @@ CREATE TABLE IF NOT EXISTS Experiments (
 	NumEpochs INTEGER NOT NULL,
 	Dropout REAL NOT NULL,
 	Patience INTEGER NOT NULL,
-	BatchSize INTEGER NOT NULL,
-	LearningRate INTEGER NOT NULL,
-	Optimizer INTEGER NOT NULL,
+	BatchSizeTrain INTEGER NOT NULL,
+	BatchSizeTest INTEGER NOT NULL,
+	LearningRate FLOAT NOT NULL,
+	Optimizer TEXT NOT NULL,
 	WeightDecay REAL NOT NULL,
 	Criterion TEXT NOT NULL,
 	UseLrScheduler INTEGER, -- Boolean
