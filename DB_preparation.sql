@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS Experiments (
 	BatchSizeTrain INTEGER NOT NULL,
 	BatchSizeTest INTEGER NOT NULL,
 	LearningRate FLOAT NOT NULL,
-	Optimizer INTEGER NOT NULL,
+	Optimizer TEXT NOT NULL,
 	WeightDecay REAL NOT NULL,
 	Criterion TEXT NOT NULL,
 	UseLrScheduler INTEGER, -- Boolean
