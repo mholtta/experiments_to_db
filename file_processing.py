@@ -60,6 +60,9 @@ def out_file_processing(folder, out_file):
                  experiment_description["elmo_dropout"], experiment_description["elmo_gamma"], experiment_description["use_elmo"],
                  experiment_description["pretrained_model"], date, time]
 
+    # Converting true to 1 and false to 0, as SQlite doesn't have boolean data type. Booleans stored as int
+    experiment = list(map(true_false_converter, experiment))
+
     return experiment, model_criteria
 
 
@@ -252,3 +255,16 @@ def get_folder_name(full_path):
 
     return folder
 
+def true_false_converter(value):
+    """
+    Helper function to convert booleans into 0/1 as SQlite doesn't have a boolean data type.
+
+    Converting to strings to follow formatting of other values in the input. Relying on later part of pipeline to change to int.
+
+    """
+    if value == "True":
+        return '1'
+    elif value == "False":
+        return '0'
+    else:
+        return value
