@@ -9,7 +9,7 @@ class TestFileProcessing(unittest.TestCase):
     def test_out_file_processing1(self):
         accepted_output_experiment = ["bert_Jul_29_16_00_31_test1", "/test", "50", "3",
                             "2500", "512", None, "bert", "3", "25", "8", "0.2", "10",
-                            "16", "0.0001", "AdamW", "0.1", "f1_macro", "True", "0.1", "True", "0.95", "False",
+                            "16", "1","0.0001", "AdamW", "0.1", "f1_macro", "True", "0.1", "True", "0.95", "False",
                             "12", "1", "10", "False", "0", "0.1", "0",
                             "emilyalsentzer/Bio_ClinicalBERT", "2020-07-29", "16:00"]
 
@@ -53,7 +53,7 @@ class TestFileProcessing(unittest.TestCase):
 
         accepted_output_experiment = [("bert_Jul_29_16_00_31_test1", "/test", "50", "3",
                             2500, 512, None, "bert", 3, 25, 8, 0.2, 10,
-                            16, 0.0001, "AdamW", 0.1, "f1_macro", "True", 0.1, "True", 0.95, "False",
+                            16, 1,0.0001, "AdamW", 0.1, "f1_macro", "True", 0.1, "True", 0.95, "False",
                             12, 1, 10, "False", 0.0, 0.1, 0,
                             "emilyalsentzer/Bio_ClinicalBERT", "2020-07-29", "16:00", 1, 1)]
 

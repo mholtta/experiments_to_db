@@ -62,11 +62,11 @@ def experiment_to_db(cur: sqlite3.Cursor, experiment: List[str]):
     """
     cur.execute("""INSERT OR IGNORE INTO Experiments(FolderName, Data, ICDCodeSet,
                     Version, MaxLength, BertMaxLength, JobID, Model, FilterSize, NumFilterMaps, NumEpochs,
-                    Dropout, Patience, BatchSize, LearningRate, Optimizer, WeightDecay, Criterion, UseLrScheduler,
+                    Dropout, Patience, BatchSizeTrain, BatchSizeTest, LearningRate, Optimizer, WeightDecay, Criterion, UseLrScheduler,
                     WarmUp, UseLrLayerDecay, LrLayerDecay, TuneWordEmbedding, RandomSeed, UseExternalEmbedding, 
                     NumWorkers, ElmoTune, ElmoDropOut, ElmoGamma, UseElmo, PreTrainedModel, Date, Time, EpochsRun, 
                     BestModelAtEpoch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", experiment)
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", experiment)
 
 def test_statistics_to_db(cur: sqlite3.Cursor, test_statistics: List[Union[str, int, float]]):
     """

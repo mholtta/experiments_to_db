@@ -27,6 +27,11 @@ def out_file_processing(folder, out_file):
     # Values contain extra single or double quotes needing to be removed
     experiment_description = {item.split('=')[0].strip() : quote_remover( item.split('=')[1] ) for item in namespace}
 
+    # Checking if key "batch_size_train" exists in dictionary, if not renaming keys
+    # Logic added due to allowing separately to set batch size for training and testing. Prior to change test batch size was 1.
+    if not "batch_size_train" in experiment_description:
+        experiment_description["batch_size_train"] = experiment_description.pop("batch_size")
+        experiment_description["batch_size_test"] = '1' # As string following other values in dict
 
     # Converting to defaultdict for easy default value
     experiment_description = defaultdict(lambda: None, experiment_description)
@@ -47,12 +52,13 @@ def out_file_processing(folder, out_file):
                  experiment_description["MAX_LENGTH"], experiment_description["BERT_MAX_LENGTH"], experiment_description["job_id"],
                  experiment_description["model"], experiment_description["filter_size"], experiment_description["num_filter_maps"],
                  experiment_description["n_epochs"], experiment_description["dropout"], experiment_description["patience"],
-                 experiment_description["batch_size"], experiment_description["lr"], experiment_description["optimizer"],
-                 experiment_description["weight_decay"], experiment_description["criterion"], experiment_description["use_lr_scheduler"],
-                 experiment_description["warm_up"], experiment_description["use_lr_layer_decay"], experiment_description["lr_layer_decay"],
-                 experiment_description["tune_wordemb"], experiment_description["random_seed"], experiment_description["use_ext_emb"],
-                 experiment_description["num_workers"], experiment_description["elmo_tune"], experiment_description["elmo_dropout"],
-                 experiment_description["elmo_gamma"], experiment_description["use_elmo"], experiment_description["pretrained_model"], date, time]
+                 experiment_description["batch_size_train"], experiment_description["batch_size_test"], experiment_description["lr"],
+                 experiment_description["optimizer"], experiment_description["weight_decay"], experiment_description["criterion"],
+                 experiment_description["use_lr_scheduler"], experiment_description["warm_up"], experiment_description["use_lr_layer_decay"],
+                 experiment_description["lr_layer_decay"], experiment_description["tune_wordemb"], experiment_description["random_seed"], 
+                 experiment_description["use_ext_emb"], experiment_description["num_workers"], experiment_description["elmo_tune"], 
+                 experiment_description["elmo_dropout"], experiment_description["elmo_gamma"], experiment_description["use_elmo"],
+                 experiment_description["pretrained_model"], date, time]
 
     return experiment, model_criteria
 

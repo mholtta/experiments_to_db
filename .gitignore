@@ -33,9 +33,12 @@ MANIFEST
 # VSCode
 .vscode/
 
-#SQlite database
+# SQlite database
 *.db
 *.db-journal
+
+# PowerBI files
+*.pbix
 
 # Config file
 config.py
