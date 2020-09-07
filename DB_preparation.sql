@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS Experiments (
 	Date TEXT NOT NULL,
 	Time TEXT NOT NULL,
 	EpochsRun INTEGER NOT NULL,
-	BestModelAtEpoch INTEGER NOT NULL
+	BestModelAtEpoch INTEGER NOT NULL,
+	ExperimentFinalized INTEGER -- Boolean
 );
 
 CREATE TABLE IF NOT EXISTS TrainingStatistics (

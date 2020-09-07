@@ -40,6 +40,9 @@ MANIFEST
 # PowerBI files
 *.pbix
 
+# .sh files
+*.sh
+
 # Config file
 config.py
 

@@ -35,13 +35,21 @@ def main(db_name: str, folder_for_experiments: str):
                     # Then get training and test statistics from metrics.json. And also additional experiment info
                     num_epochs, best_model_at_epoch, training_statistics, test_statistics = metrics_file_processing(folder, m, model_criteria)
 
-                    # Appending num_epochs and best_model_at_epoch gotten from metrics.json to experiment desciption
+                    # Checking if experiment is finalised, i.e. test set performance is reported. 
+                    # Experiment isn't finalised if all values except first one of test_statistics are null.
+                    # Yielding "1" = True, "0" = False due to SQlite not having boolean datatypes
+                    experiment_finalised = "1" if  set(test_statistics[1:]) != None else "0" 
+
+                    # Appending num_epochs and best_model_at_epoch gotten from metrics.json to experiment desciption.
+                    # Also appending experiment_finalised
                     experiment.append(num_epochs)
                     experiment.append(best_model_at_epoch)
+                    experiment.append(experiment_finalised)
 
                     # Storing data to database
                     experiment_to_db(cur, experiment)
-                    test_statistics_to_db(cur, test_statistics)
+                    if experiment_finalised == "1": # Store test_statistics only if experiment finalised
+                        test_statistics_to_db(cur, test_statistics)
                     training_statistics_to_db(cur, training_statistics)
                                         
                     # Ending the implicit transaction only after all inserts done for one experiment to improve performance
@@ -58,15 +66,20 @@ def experiment_to_db(cur: sqlite3.Cursor, experiment: List[str]):
     A helper function for storing the experiment information to the database.
 
     The input experiment needs to be in the order of columns specified within this function.
+    When tuple has already been inserted into table, it is being checked whether experiment has
+    been finalised after last update.
 
     """
-    cur.execute("""INSERT OR IGNORE INTO Experiments(FolderName, Data, ICDCodeSet,
+    cur.execute("""INSERT INTO Experiments(FolderName, Data, ICDCodeSet,
                     Version, MaxLength, BertMaxLength, JobID, Model, FilterSize, NumFilterMaps, NumEpochs,
                     Dropout, Patience, BatchSizeTrain, BatchSizeTest, LearningRate, Optimizer, WeightDecay, Criterion, UseLrScheduler,
                     WarmUp, UseLrLayerDecay, LrLayerDecay, TuneWordEmbedding, RandomSeed, UseExternalEmbedding, 
                     NumWorkers, ElmoTune, ElmoDropOut, ElmoGamma, UseElmo, PreTrainedModel, Date, Time, EpochsRun, 
-                    BestModelAtEpoch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", experiment)
+                    BestModelAtEpoch, ExperimentFinalized) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT(FolderName) DO UPDATE SET
+                        ExperimentFinalized = excluded.ExperimentFinalized
+                    WHERE excluded.ExperimentFinalized > Experiments.ExperimentFinalized;""", experiment)
 
 def test_statistics_to_db(cur: sqlite3.Cursor, test_statistics: List[Union[str, int, float]]):
     """
