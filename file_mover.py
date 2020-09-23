@@ -2,6 +2,7 @@ import glob
 import re
 import shutil
 from config import error_file_path, out_file_path, directories_path
+import os
 
 err_files = glob.glob(error_file_path)
 out_files = glob.glob(out_file_path)
@@ -25,5 +26,13 @@ for file in combined:
             # print(job_id, folder,"\n")
             new_path = "".join([folder,filename])
             # print("new_path", new_path, "\n")
-            shutil.move(file, new_path)
+
+            if os.path.exists(new_path):
+                # If exists, copy only if newer
+                if os.stat(file).st_mtime - os.stat(new_path).st_mtime > 1:
+                    shutil.copy2(file, new_path)
+
+            else:
+                # Copy if doesn't exist
+                shutil.copy2(file, new_path)
 
