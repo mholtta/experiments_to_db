@@ -19,6 +19,7 @@ for file in combined:
     job_id = match.group()[1:] # Removing "-" from beginning
     filename = file.split('\\')[-1]
     
+    # print(file)
     # Looping through folders to find match
     # Inefficient, but doesn't matter since not too many folders
     for folder in directories:
