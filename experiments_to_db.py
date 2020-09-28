@@ -40,7 +40,8 @@ def main(db_name: str, folder_for_experiments: str):
                     # Checking if experiment is finalised, i.e. test set performance is reported. 
                     # Experiment isn't finalised if all values except first one of test_statistics are null.
                     # Yielding "1" = True, "0" = False due to SQlite not having boolean datatypes
-                    experiment_finalised = "1" if  set(test_statistics[1:]) != None else "0" 
+                    set_test_statistics = set(test_statistics[1:])
+                    experiment_finalised = "0" if len(set_test_statistics) == 1 and None in set_test_statistics else "1" 
 
                     # Appending num_epochs and best_model_at_epoch gotten from metrics.json to experiment desciption.
                     # Also appending experiment_finalised
