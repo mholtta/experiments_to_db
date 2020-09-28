@@ -23,6 +23,8 @@ def main(db_name: str, folder_for_experiments: str):
 
             if len(out_files) > 1:
                 warnings.warn("Folder {} has several out-files, file not processed.".format(folder))
+            elif len(out_files) == 0:
+                warnings.warn("Folder {} has no out-files, folder not processed.".format(folder))
             else:
                 out_file = out_files[0]
                 metrics_file = "".join([folder, "metrics.json"])
