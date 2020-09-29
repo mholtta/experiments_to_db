@@ -97,7 +97,7 @@ DROP VIEW IF EXISTS Leaderboard;
 -- View with top instances for each model based on test MicroF1-score
 CREATE VIEW IF NOT EXISTS Leaderboard
 AS
-	SELECT Experiments.Version, Experiments.ICDCodeSet, Experiments.Model, Experiments.LearningRate, Experiments.FolderName, Experiments.BestModelAtEpoch, Experiments.EpochsRun, Experiments.NumEpochs, TestStatistics.*
+	SELECT Experiments.*, TestStatistics.*
     FROM Experiments, TestStatistics
     WHERE Experiments.FolderName = TestStatistics.FolderName AND TestStatistics.FolderName IN
         (SELECT TestStatistics.FolderName
@@ -106,4 +106,4 @@ AS
             GROUP BY Experiments.Model, Experiments.Version, Experiments.ICDCodeSet
             HAVING MAX(TestStatistics.MicroF1)
         )
-    ORDER BY Experiments.Version, Experiments.ICDCodeSet, TestStatistics.MicroF1 DESC;
+    ORDER BY Experiments.Version, Experiments.ICDCodeSet, TestStatistics.MacroF1 DESC;
