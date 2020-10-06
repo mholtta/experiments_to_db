@@ -81,8 +81,10 @@ def experiment_to_db(cur: sqlite3.Cursor, experiment: List[str]):
                     BestModelAtEpoch, ExperimentFinalized) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(FolderName) DO UPDATE SET
-                        ExperimentFinalized = excluded.ExperimentFinalized
-                    WHERE excluded.ExperimentFinalized > Experiments.ExperimentFinalized;""", experiment)
+                        ExperimentFinalized = excluded.ExperimentFinalized,
+                        EpochsRun = excluded.EpochsRun,
+                        BestModelAtEpoch = excluded.BestModelAtEpoch
+                    WHERE excluded.ExperimentFinalized > Experiments.ExperimentFinalized OR excluded.EpochsRun > Experiments.EpochsRun;""", experiment)
 
 def test_statistics_to_db(cur: sqlite3.Cursor, test_statistics: List[Union[str, int, float]]):
     """
