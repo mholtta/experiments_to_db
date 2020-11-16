@@ -107,3 +107,17 @@ AS
             HAVING MAX(TestStatistics.MicroF1)
         )
     ORDER BY Experiments.Version, Experiments.ICDCodeSet, TestStatistics.MacroF1 DESC;
+
+-- New view
+CREATE VIEW IF NOT EXISTS Leaderboard
+AS
+	SELECT Experiments.*, TestStatistics.*
+    FROM Experiments, TestStatistics
+    WHERE Experiments.FolderName = TestStatistics.FolderName AND TestStatistics.FolderName IN
+        (SELECT TestStatistics.FolderName
+            FROM TestStatistics, Experiments
+            WHERE Experiments.FolderName = TestStatistics.FolderName
+            GROUP BY Experiments.Model, Experiments.Version, Experiments.ICDCodeSet, Experiments.UseElmo 
+            HAVING MAX(TestStatistics.MacroF1)
+        )
+    ORDER BY Experiments.Version, Experiments.ICDCodeSet, TestStatistics.MacroF1 DESC;
